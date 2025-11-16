@@ -10,7 +10,7 @@ A web-based computer vision demonstration application that mirrors Android NDK/O
 
 ## Architecture
 
-### Modular Structure
+### Modular Structure [FlamSoftware]
 
 ```
 /client/src/lib/
