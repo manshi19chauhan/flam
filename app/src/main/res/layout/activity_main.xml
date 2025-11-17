@@ -1,0 +1,62 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:padding="8dp">
+
+    <!-- Header Section with Controls -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#33000000"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/toggle_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Mode: Original"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:background="@drawable/button_background"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/fps_counter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="FPS: 0.0 | Mode: Original"
+            android:textColor="#00FF00"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:background="#22000000" />
+
+    </LinearLayout>
+
+    <!-- OpenGL Preview Surface -->
+    <com.example.edgedetection.GLRenderer
+        android:id="@+id/gl_surface"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="4dp" />
+
+    <!-- Footer Info -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Real-Time Edge Detection - OpenCV + OpenGL ES"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:padding="8dp" />
+
+</LinearLayout>

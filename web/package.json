@@ -1,0 +1,13 @@
+{
+  "name": "edge-detection-viewer",
+  "version": "1.0.0",
+  "description": "TypeScript web viewer for edge detection results",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "serve": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

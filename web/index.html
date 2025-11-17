@@ -1,0 +1,86 @@
+<!-- web/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edge Detection Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .preview-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #preview {
+            max-width: 100%;
+            border: 1px solid #ddd;
+        }
+        .stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .controls {
+            margin: 15px 0;
+        }
+        select, button {
+            padding: 8px 15px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edge Detection Viewer</h1>
+        
+        <div class="controls">
+            <label for="mode-select">Processing Mode:</label>
+            <select id="mode-select">
+                <option value="original">Original</option>
+                <option value="grayscale">Grayscale</option>
+                <option value="canny" selected>Canny Edge</option>
+            </select>
+            <button onclick="captureFrame()">Capture Frame</button>
+        </div>
+        
+        <div class="preview-container">
+            <canvas id="preview" width="640" height="480"></canvas>
+        </div>
+        
+        <div class="stats">
+            <h3>Frame Statistics</h3>
+            <div id="stats">Loading...</div>
+            <div id="mode">Mode: canny</div>
+        </div>
+    </div>
+
+    <script src="dist/viewer.js"></script>
+    <script>
+        function captureFrame() {
+            const viewer = window.viewer;
+            if (viewer) {
+                const dataUrl = viewer.captureFrame();
+                const link = document.createElement('a');
+                link.download = 'edge-frame.png';
+                link.href = dataUrl;
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>

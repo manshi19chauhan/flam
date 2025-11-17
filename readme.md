@@ -1,148 +1,221 @@
-# Real-Time Computer Vision Web Application
 
-## Project Overview
+# Real-Time Edge Detection Viewer
 
-A web-based computer vision demonstration application that mirrors Android NDK/OpenCV architecture but implemented for browsers using TypeScript, WebGL, and Canvas API.
+A real-time Android application that captures camera frames, processes them using OpenCV C++ for edge detection, renders with OpenGL ES, and includes a TypeScript web viewer for debugging and visualization.
 
-**Purpose**: Technical assessment demonstrating real-time image processing, WebGL rendering, and modular TypeScript architecture.
+## 📱 Features Implemented
 
-**Current State**: Frontend complete with full processing pipeline, WebGL rendering, and comprehensive UI controls.
+### Android App
 
-## Architecture
+* **Real-time Camera Feed** using CameraX API
+* **OpenCV C++ Integration** via JNI for high-performance image processing
+* **Multiple Processing Modes** :
+* Original camera feed
+* Grayscale conversion
+* Canny Edge Detection
+* **OpenGL ES 2.0 Rendering** for smooth real-time display
+* **Performance Monitoring** with live FPS counter
+* **Mode Toggle** with visual feedback
 
-### Modular Structure[FlamSoftware]
+### Web Viewer
+
+* **TypeScript-based** frame display interface
+* **Real-time Statistics** overlay (FPS, resolution, processing time)
+* **Interactive Mode Selection**
+* **Frame Capture** functionality
+* **Mock WebSocket** simulation for real-time updates
+
+## 🏗️ Architecture
+
+**text**
 
 ```
-/client/src/lib/
-  ├── camera.ts              - WebRTC camera capture (equivalent to Android Camera2 API)
-  ├── imageProcessing.ts     - OpenCV-style algorithms (Canny, Sobel, Grayscale)
-  └── webglRenderer.ts       - WebGL texture rendering with shaders (OpenGL ES equivalent)
-
-/client/src/components/
-  ├── StatsOverlay.tsx       - Real-time FPS and performance metrics
-  ├── ControlPanel.tsx       - Processing mode and shader controls
-  ├── CameraPermissionModal.tsx - Permission request UI
-  └── ThemeToggle.tsx        - Dark/Light mode switcher
-
-/client/src/pages/
-  └── ComputerVision.tsx     - Main application page
-
-/shared/
-  └── schema.ts              - TypeScript interfaces and Zod schemas
+Camera Feed (CameraX) 
+    → ImageAnalysis 
+    → JNI Bridge 
+    → OpenCV C++ Processing 
+    → OpenGL ES Rendering 
+    → Android Display
+        ↓
+    TypeScript Web Viewer (Debug Interface)
 ```
 
-### Data Flow
+### Technology Stack
 
-1. **Camera Capture** (camera.ts) → WebRTC MediaStream → HTMLVideoElement
-2. **Frame Extraction** (imageProcessing.ts) → Canvas 2D context → ImageData
-3. **Processing** (imageProcessing.ts) → Algorithm application → Processed ImageData
-4. **Rendering** (webglRenderer.ts) → WebGL texture upload → Shader application → Canvas display
+* **Android** : Kotlin, CameraX, OpenGL ES
+* **Native** : C++, OpenCV, JNI
+* **Graphics** : OpenGL ES 2.0, GLSL Shaders
+* **Web** : TypeScript, HTML5 Canvas
+* **Build** : CMake, Gradle, npm
 
-## Features Implemented
+## 📁 Project Structure
 
-### Core Features (MVP)
+**text**
 
-- ✅ **Camera Feed Integration**: WebRTC camera access with permission handling
-- ✅ **Real-Time Processing**:
-  - Canny Edge Detection (full implementation)
-  - Sobel Operator
-  - Grayscale conversion
-  - Threshold processing
-- ✅ **WebGL Rendering**: Texture-based rendering with shader effects (15+ FPS)
-- ✅ **Shader Effects**:
-  - Invert
-  - Sepia
-  - Brightness adjustment
-  - Contrast adjustment
-- ✅ **Live Statistics**: FPS counter, resolution display, processing time tracking
-- ✅ **Interactive Controls**:
-  - Toggle between processing modes
-  - Adjustable algorithm parameters
-  - Play/Pause processing
-  - Start/Stop camera
+```
+FLAM_ASSIGNMENT/
+├── app/                          # Android Application
+│   ├── src/main/
+│   │   ├── java/com/example/edgedetection/
+│   │   │   ├── MainActivity.kt           # UI & Permission handling
+│   │   │   ├── CameraManager.kt          # Camera lifecycle management
+│   │   │   ├── FrameAnalyzer.kt          # Frame processing coordinator
+│   │   │   ├── OpenCVProcessor.kt        # JNI bridge for OpenCV
+│   │   │   └── GLRenderer.kt             # OpenGL ES surface
+│   │   ├── cpp/                      # Native C++ Code
+│   │   │   ├── CMakeLists.txt            # Native build configuration
+│   │   │   ├── native-lib.cpp            # Library entry point
+│   │   │   ├── opencv_processor.cpp      # OpenCV image processing
+│   │   │   └── opengl_renderer.cpp       # OpenGL rendering engine
+│   │   └── res/                      # Android resources
+│   └── build.gradle                     # Android build config
+├── jni/                          # JNI Components
+│   ├── include/                    # Native headers
+│   │   ├── opencv_processor.h
+│   │   └── opengl_renderer.h
+│   ├── jni_bridge.cpp              # JNI helper functions
+│   └── native_helper.cpp           # Platform utilities
+├── gl/                           # OpenGL ES Components
+│   ├── shaders/                   # GLSL Shaders
+│   │   ├── vertex.glsl
+│   │   └── fragment.glsl
+│   └── texture_manager.cpp          # Texture management
+├── web/                          # TypeScript Web Viewer
+│   ├── src/
+│   │   └── viewer.ts                  # Main web viewer
+│   ├── index.html                    # Web interface
+│   ├── package.json                  # TypeScript build config
+│   └── tsconfig.json                 # TypeScript compiler
+└── README.md                       # This file
+```
 
-### UI/UX Features
+## 🚀 Setup Instructions
 
-- ✅ Dark mode (primary) and light mode support
-- ✅ Technical aesthetic with monospace statistics
-- ✅ Responsive layout (desktop/tablet/mobile)
-- ✅ Camera permission modal with clear instructions
-- ✅ Real-time parameter adjustment with sliders
-- ✅ Color-coded FPS indicators (green/yellow/red)
-- ✅ Toast notifications for state changes
+### Prerequisites
 
-## Technical Implementation
+* **Android Studio** Arctic Fox or later
+* **Android NDK** 25.0 or later
+* **OpenCV Android SDK** 4.5.0 or later
+* **Node.js** 16.0 or later (for web viewer)
+* **Android device/emulator** with API level 24+
 
-### Image Processing Algorithms
+### Android Setup
 
-**Canny Edge Detection** (Full 4-step implementation):
+1. **Clone the repository**
+   **bash**
 
-1. Gaussian blur for noise reduction
-2. Sobel operator for gradient calculation
-3. Non-maximum suppression
-4. Double threshold with edge tracking by hysteresis
+   ```
+   git clone https://github.com/your-username/EdgeDetectionViewer.git
+   cd EdgeDetectionViewer
+   ```
+2. **Install OpenCV Android SDK**
 
-**Sobel Operator**: 3x3 convolution kernels for gradient magnitude and direction
+   * Download OpenCV Android SDK from [OpenCV.org](https://opencv.org/releases/)
+   * Extract to your preferred location
+   * Set OpenCV path in `local.properties`:
+     **properties**
 
-**Performance**: Optimized for 15-30 FPS on standard webcams (720p)
+     ```
+     opencv.dir=/path/to/OpenCV-android-sdk
+     ```
+3. **Build and Run**
 
-### WebGL Shader System
+   * Open project in Android Studio
+   * Build project (Build → Make Project)
+   * Run on connected device or emulator
 
-- Vertex shader: Simple quad rendering with texture coordinates
-- Fragment shader: Supports 5 shader effects with uniform parameters
-- Texture management: Efficient texture updates per frame
+### Web Viewer Setup
 
-## Tech Stack
+1. **Navigate to web directory**
+   **bash**
 
-- **Frontend**: React, TypeScript, Vite
-- **Styling**: Tailwind CSS, shadcn/ui components
-- **WebGL**: WebGL 1.0/2.0 for rendering
-- **Camera**: WebRTC MediaStream API
-- **State Management**: React hooks
-- **Build Tool**: Vite
+   ```
+   cd web
+   ```
+2. **Install dependencies**
+   **bash**
 
-## Performance Targets
+   ```
+   npm install
+   ```
+3. **Build TypeScript**
+   **bash**
 
-- **Target FPS**: 15-30 FPS (achieved)
-- **Processing Time**: <33ms per frame average
-- **Resolution Support**: Up to 1280x720
-- **Browser Compatibility**: Modern browsers with WebGL support
+   ```
+   npm run build
+   ```
+4. **Start local server**
+   **bash**
 
-## Development Guidelines
+   ```
+   npm run serve
+   # or
+   python3 -m http.server 8000
+   ```
+5. **Open in browser**
+   **text**
 
-### Design System
+   ```
+   http://localhost:8000
+   ```
 
-Following technical/developer tool aesthetic:
+## 🔧 Configuration
 
-- Dark-first color scheme (deep slate backgrounds)
-- Monospace fonts (JetBrains Mono) for technical data
-- Emerald green accent color for active states
-- High contrast for readability
-- Minimal decorative elements
+### OpenCV Integration
 
-### Code Conventions
+The project uses OpenCV C++ for image processing:
 
-- TypeScript strict mode enabled
-- Functional React components with hooks
-- Ref-based access to canvas/video elements
-- Performance monitoring via requestAnimationFrame
-- Error boundary handling for camera failures
+* **Canny Edge Detection** with Gaussian blur preprocessing
+* **Grayscale conversion** with optimized color space transforms
+* **Real-time processing** at 15-20 FPS
 
-## Architecture Review Results
+### JNI Implementation
 
-**Status**: ✅ PASSED
+* **Efficient data transfer** between Java and C++
+* **Minimal memory copying** using direct buffer access
+* **Error handling** with proper exception propagation
 
-**Key Findings**:
+### OpenGL ES Rendering
 
-- WebGL renderer properly initializes with WebGL1 context
-- Shaders compile successfully with correct GLSL syntax
-- Processing pipeline meets 15+ FPS performance target
-- Code quality and modularity meet standards
-- All image processing algorithms correctly implemented
-- UI follows design guidelines with technical aesthetic
+* **Texture-based rendering** for processed frames
+* **GLSL shaders** for potential visual effects
+* **Double buffering** for smooth performance
 
-**Performance**:
+## 🎯 Usage
 
-- Target FPS: 15-30 (achieved on commodity hardware)
-- Processing time: <33ms per frame average
-- Real-time parameter adjustment with no frame drops
+### Android App
+
+1. Grant camera permissions when prompted
+2. View real-time camera feed with edge detection
+3. Tap "Mode" button to cycle through:
+   * **Original** : Raw camera feed
+   * **Grayscale** : Monochrome conversion
+   * **Canny Edge** : Real-time edge detection
+4. Monitor FPS and performance stats
+
+### Web Viewer
+
+1. Open `http://localhost:8000`
+2. View sample edge detection results
+3. Change processing modes using dropdown
+4. Capture frames using "Capture Frame" button
+5. Monitor real-time statistics
+
+## **Optimizations Implemented:**
+
+* Native C++ processing for maximum performance
+* Texture recycling in OpenGL
+* Efficient JNI data transfer
+* Frame skipping under heavy load
+
+## 🐛 Known Issues & Limitations
+
+1. **YUV Conversion** : Simplified YUV to RGB conversion may need optimization
+2. **Memory Management** : Manual native memory management requires careful attention
+3. **Device Compatibility** : Some older devices may have performance issues
+4. **Web Integration** : Currently uses mock data; real WebSocket integration needed for production
+
+
+## 📄 License
+
+This project is developed as part of a technical assessment for R&D Intern position.
